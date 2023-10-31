@@ -3,6 +3,8 @@ Jonathan Crescenzo, 10/30/2023
     This is a testing program to try out using pygame, and by with that many
 modules in general. Likely this will be a sidescrolling game since the
 tutorial I originally used was a top down space invaders clone.
+
+scrolling bg: https://github.com/russs123/pygame_tutorials/blob/main/Infinite_Background/scroll_tut.py
 """
 import pygame  # game creation import
 import random  # for enemy placement
