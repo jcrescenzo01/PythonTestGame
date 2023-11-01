@@ -40,7 +40,7 @@ tiles = math.ceil(screen_width / bg_width) + 1
 
 # Player
 playerImg = pygame.image.load('spaceship.png')
-playerX = 20  # 0 = left border
+playerX = 0  # 0 = left border
 playerY = 280  # 0 = upper border
 playerX_change = 0
 playerY_change = 0
@@ -52,7 +52,6 @@ enemyY = []
 enemyX_change = []
 enemyY_change = []
 num_of_enemies = 3  # number of enemies we want
-
 for i in range(num_of_enemies):  # want to be able to loop through them
     enemyImg.append(pygame.image.load('enemy1.png'))  # .append because its a list now, was '=' originally
     enemyX.append(random.randint(1200, 1436))
@@ -97,14 +96,13 @@ running = True
 while running:
     screen.fill((0, 0, 0))
 
-    # draw scrolling background
+    # Draw Scrolling Background
     for i in range(0, tiles):
         screen.blit(bg, (i * bg_width + scroll, 0))
         bg_rect.x = i * bg_width + scroll
         pygame.draw.rect(screen, (255, 0, 0), bg_rect, 1)
-
     # Scroll Background
-    scroll -= 5
+    scroll -= 4
 
     # Reset Scroll
     if abs(scroll) > bg_width:
@@ -116,16 +114,17 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
+        # Key Bindings
         if event.type == pygame.KEYDOWN:  # checks if the key is being pressed down, KEYUP would check if its up / releasing
-            print("Keystroke Pressed")
+            #print("Keystroke Pressed")
             if event.key == pygame.K_UP:
-                playerY_change = -10
+                playerY_change = -6
             if event.key == pygame.K_DOWN:
-                playerY_change = 10
+                playerY_change = 6
             if event.key == pygame.K_RIGHT:
-                playerX_change = 10
+                playerX_change = 6
             if event.key == pygame.K_LEFT:
-                playerX_change = -10
+                playerX_change = -6
             if event.key == pygame.K_SPACE:  # checks spacebar press
                 if bullet_state == "ready":  # makes sure bullet doesnt teleport to us by requiring the ready state
                     # bullet_sound = mixer.Sound(mixer.Sound('laser.wav'))  # loads bullet sound when firing
@@ -136,7 +135,7 @@ while running:
                     # originally playerX but that gets the bullet stuck on our current x location
 
         if event.type == pygame.KEYUP:
-            print("Keystroke Released")
+            #print("Keystroke Released")
             if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT \
                     or event.key == pygame.K_UP or event.key == pygame.K_DOWN:
                 playerX_change = 0
@@ -145,7 +144,7 @@ while running:
 
     # Enemy Movement
     for i in range(num_of_enemies):
-        rSpeedNum = random.randint(-40, -1)
+        rSpeedNum = random.randint(-5, -1)
         enemyX_change[i] = rSpeedNum
         enemyX[i] += enemyX_change[i]  # continuous movement
         enemy(enemyX[i], enemyY[i], i)
@@ -183,6 +182,13 @@ while running:
     playerY += playerY_change
 
     # Left and Right Wall Border Control for Player
+    """
+    playerX = min(max(playerX, 0), screen_width)
+    playerY = min(max(playerY, 0), screen_height)
+    """
+    playerX = min(max(playerX, 0), screen_width - 63)
+    playerY = min(max(playerY, 0), screen_height - 63)
+    """
     if playerX <= 0:
         playerX = 0
     elif playerX >= 1436:
@@ -191,6 +197,9 @@ while running:
         playerY = 0
     elif playerY >= 536:
         playerY = 536
+    """
+
+    print('X: {}      Y: {}'.format(playerX,playerY))
 
     player(playerX, playerY)
 
